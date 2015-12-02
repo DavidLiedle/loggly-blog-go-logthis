@@ -16,7 +16,8 @@
 package main
 
 import (
-	"github.com/golang/glog"
+	"github.com/golang/glog" // An external package, from Google
+	//"log" // The internal package (just to show it in action). Un-comment to play with the isolated snippet.
  	"os"
  	"flag"
 	"fmt"
@@ -26,14 +27,30 @@ func usage(){
 	fmt.Fprintf(os.Stderr, "usage: example -stderrthreshold=[INFO|WARN|FATAL] -log_dir=[string]\n", )
 	flag.PrintDefaults()
 	os.Exit(2)
-}
+} // End of func usage()
 
 func init(){
+
 	flag.Usage = usage
 	// NOTE: This next line is key you have to call flag.Parse() for the command line 
 	// options or "flags" that are defined in the glog module to be picked up.
 	flag.Parse()
-}
+
+	// Here's an isolated snippet to show the internal log package in action:
+		/*
+		f, err := os.Open("config.json") // We're catching both return types: the file, AND the error
+		if err != nil { // Conditionally do something IF there's anything of note in err
+		    log.Fatal(err) // For example, kill it with fire before it lays eggs
+		}
+		*/
+	// ...and then you'd do something with the open config *File f, since err == nil and you're good to Go!
+
+	// THIS EXAMPLE WILL KILL YOUR CODE EVERYTIME,
+	// so comment it out, or create the "config.json" file for great success! :D
+	// Because it is a breaking example, it's up to you to un-comment the region and configure as desired if
+	// you want to play with it.
+
+} // End of func init()
 
 func main() {
 
@@ -43,7 +60,7 @@ func main() {
 	fmt.Println("Here's what we'll log:")
 	glog.V(2).Infoln("We're up to the part where we talk about what we're going to log...")
 
-	//glog.V(2).Flush()
+	//glog.V(2).Flush() // cuz that's a thing
 
 	number_of_lines := 100
 	for i := 0; i < number_of_lines; i++ {
@@ -52,4 +69,4 @@ func main() {
 		glog.Error(message)
 	}
 
-}
+} // End of func main()
